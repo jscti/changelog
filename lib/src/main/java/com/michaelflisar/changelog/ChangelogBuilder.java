@@ -433,7 +433,7 @@ public class ChangelogBuilder implements Parcelable {
         boolean shouldShow = checkShouldShowAndUpdateMinVersion(activity);
         ChangelogDialogFragment dlg = null;
         if (shouldShow) {
-            if (getRecyclerViewItems(context).size() > 0) {
+            if (getRecyclerViewItems(activity).size() > 0) {
                 dlg = ChangelogDialogFragment.create(this, darkTheme);
                 dlg.show(activity.getSupportFragmentManager(), ChangelogDialogFragment.class.getName());
             } else {
