@@ -433,8 +433,12 @@ public class ChangelogBuilder implements Parcelable {
         boolean shouldShow = checkShouldShowAndUpdateMinVersion(activity);
         ChangelogDialogFragment dlg = null;
         if (shouldShow) {
-            dlg = ChangelogDialogFragment.create(this, darkTheme);
-            dlg.show(activity.getSupportFragmentManager(), ChangelogDialogFragment.class.getName());
+            if (getRecyclerViewItems(context).size > 0) {
+                dlg = ChangelogDialogFragment.create(this, darkTheme);
+                dlg.show(activity.getSupportFragmentManager(), ChangelogDialogFragment.class.getName());
+            } else {
+                Log.i(Constants.DEBUG_TAG, "Showing changelog dialog skipped because changelog to show is empty");
+            }
 
         } else {
             Log.i(Constants.DEBUG_TAG, "Showing changelog dialog skipped");
@@ -465,9 +469,11 @@ public class ChangelogBuilder implements Parcelable {
     public void buildAndStartActivity(Context context, Integer theme, boolean themeHasActionBar) {
         boolean shouldShow = checkShouldShowAndUpdateMinVersion(context);
         if (shouldShow) {
-            Intent intent = ChangelogActivity.createIntent(context, this, theme, themeHasActionBar);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+            if (getRecyclerViewItems(context).size > 0) {
+                Intent intent = ChangelogActivity.createIntent(context, this, theme, themeHasActionBar);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
         } else {
             Log.i(Constants.DEBUG_TAG, "Showing changelog activity skipped");
         }
